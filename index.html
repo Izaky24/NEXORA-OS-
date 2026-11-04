@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d18">
+<title>NEXORA OS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#080d18;
+ color:#eef3ff;
+}
+header{
+ padding:20px;
+ background:#101a2b;
+ border-bottom:1px solid #263653;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+.logo{font-size:23px;font-weight:bold;color:#62d6ff}
+.status{color:#72e6a0;font-size:12px}
+.container{display:flex;min-height:calc(100vh - 70px)}
+nav{
+ width:220px;
+ background:#0d1524;
+ padding:15px;
+ border-right:1px solid #263653;
+}
+nav button{
+ display:block;
+ width:100%;
+ padding:13px;
+ margin-bottom:7px;
+ background:#142238;
+ border:0;
+ color:white;
+ text-align:left;
+ border-radius:8px;
+ cursor:pointer;
+}
+nav button:hover{background:#20436a}
+main{flex:1;padding:25px;min-width:0}
+section{display:none}
+section.active{display:block}
+h1{font-size:26px;margin-bottom:10px}
+h2{font-size:19px;margin-bottom:12px}
+p{color:#b9c7dd;line-height:1.5;margin-bottom:15px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:15px;
+ margin:20px 0;
+}
+.card{
+ background:#111e32;
+ border:1px solid #263b5c;
+ border-radius:12px;
+ padding:18px;
+}
+.number{font-size:27px;color:#62d6ff;margin-top:10px}
+input,textarea,select{
+ width:100%;
+ padding:12px;
+ margin:7px 0 14px;
+ background:#0b1422;
+ border:1px solid #344969;
+ color:white;
+ border-radius:7px;
+}
+textarea{min-height:100px;resize:vertical}
+.action{
+ padding:12px 17px;
+ border:0;
+ border-radius:7px;
+ background:#168ac4;
+ color:white;
+ cursor:pointer;
+ font-weight:bold;
+}
+.action:hover{background:#0875aa}
+.output{
+ white-space:pre-wrap;
+ background:#0a1423;
+ border:1px solid #344969;
+ border-radius:8px;
+ padding:15px;
+ margin-top:15px;
+ min-height:45px;
+}
+.item{
+ padding:12px;
+ border-bottom:1px solid #263653;
+}
+.small{font-size:12px;color:#91a5c4}
+footer{
+ padding:20px;
+ text-align:center;
+ color:#8293ad;
+ border-top:1px solid #263653;
+}
+@media(max-width:700px){
+ .container{display:block}
+ nav{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:5px;
+ }
+ nav button{margin:0;font-size:12px}
+ main{padding:16px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">NEXORA OS</div>
+ <div class="status">● Sistema demonstrativo</div>
+</header>
+
+<div class="container">
+
+<nav>
+ <button onclick="showPage('inicio')">🏠 Início</button>
+ <button onclick="showPage('sites')">🌐 Criador de sites</button>
+ <button onclick="showPage('bot')">🤖 NEXORA BOT</button>
+ <button onclick="showPage('crm')">👥 Clientes</button>
+ <button onclick="showPage('produtos')">📦 Produtos</button>
+ <button onclick="showPage('pedidos')">🛒 Pedidos</button>
+ <button onclick="showPage('automacoes')">⚙️ Automações</button>
+ <button onclick="showPage('config')">🔧 Configurações</button>
+</nav>
+
+<main>
+
+<section id="inicio" class="active">
+ <h1>Painel principal</h1>
+ <p>Bem-vindo ao centro de controle do NEXORA OS.</p>
+
+ <div class="grid">
+  <div class="card">Clientes cadastrados
+   <div class="number" id="totalClientes">0</div>
+  </div>
+  <div class="card">Produtos cadastrados
+   <div class="number" id="totalProdutos">0</div>
+  </div>
+  <div class="card">Pedidos registrados
+   <div class="number" id="totalPedidos">0</div>
+  </div>
+  <div class="card">Agentes configurados
+   <div class="number">1</div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>Central de controle</h2>
+  <p>Gerencie clientes, produtos, pedidos e ferramentas do sistema.</p>
+  <p class="small">Versão inicial — recursos locais de demonstração.</p>
+ </div>
+</section>
+
+<section id="sites">
+ <h1>Criador de sites</h1>
+ <p>Crie um planejamento inicial para seu site.</p>
+
+ <label>Nome do site</label>
+ <input id="siteNome" placeholder="Exemplo: Minha Empresa">
+
+ <label>Tipo de negócio</label>
+ <input id="siteTipo" placeholder="Exemplo: Loja, tecnologia, serviços">
+
+ <label>Descrição</label>
+ <textarea id="siteDescricao" placeholder="Explique o que seu site oferece"></textarea>
+
+ <button class="action" onclick="criarSite()">Gerar planejamento</button>
+ <div class="output" id="siteResultado">Seu planejamento aparecerá aqui.</div>
+</section>
+
+<section id="bot">
+ <h1>NEXORA BOT</h1>
+ <p>Configure as informações do seu assistente virtual.</p>
+
+ <label>Nome do assistente</label>
+ <input id="botNome" value="Assistente Virtual">
+
+ <label>Função principal</label>
+ <select id="botFuncao">
+  <option>Atendimento geral</option>
+  <option>Vendas</option>
+  <option>Suporte técnico</option>
+  <option>Informações sobre produtos</option>
+ </select>
+
+ <label>Mensagem inicial</label>
+ <textarea id="botMensagem">Olá! Sou o assistente virtual. Como posso ajudar?</textarea>
+
+ <button class="action" onclick="salvarBot()">Salvar configuração</button>
+ <div class="output" id="botResultado">Configuração ainda não salva.</div>
+
+ <h2 style="margin-top:25px">Simulador de conversa</h2>
+ <input id="pergunta" placeholder="Digite uma mensagem">
+ <button class="action" onclick="responder()">Enviar</button>
+ <div class="output" id="chatResultado">A conversa aparecerá aqui.</div>
+</section>
+
+<section id="crm">
+ <h1>Gestão de clientes</h1>
+
+ <label>Nome do cliente</label>
+ <input id="clienteNome" placeholder="Nome">
+
+ <label>Contato</label>
+ <input id="clienteContato" placeholder="Telefone ou e-mail">
+
+ <button class="action" onclick="adicionarCliente()">Cadastrar cliente</button>
+
+ <h2 style="margin-top:20px">Lista de clientes</h2>
+ <div id="listaClientes"></div>
+</section>
+
+<section id="produtos">
+ <h1>Produtos</h1>
+
+ <label>Nome do produto</label>
+ <input id="produtoNome" placeholder="Nome do produto">
+
+ <label>Preço</label>
+ <input id="produtoPreco" type="number" min="0" step="0.01" placeholder="0,00">
+
+ <button class="action" onclick="adicionarProduto()">Cadastrar produto</button>
+
+ <h2 style="margin-top:20px">Catálogo</h2>
+ <div id="listaProdutos"></div>
+</section>
+
+<section id="pedidos">
+ <h1>Pedidos</h1>
+ <p>Registre pedidos como rascunhos. Nenhum pagamento é processado aqui.</p>
+
+ <label>Nome do cliente</label>
+ <input id="pedidoCliente" placeholder="Cliente">
+
+ <label>Descrição do pedido</label>
+ <textarea id="pedidoDescricao" placeholder="Detalhes do pedido"></textarea>
+
+ <button class="action" onclick="adicionarPedido()">Registrar pedido</button>
+
+ <h2 style="margin-top:20px">Histórico</h2>
+ <div id="listaPedidos"></div>
+</section>
+
+<section id="automacoes">
+ <h1>Central de automações</h1>
+ <p>Organize as próximas integrações do sistema.</p>
+
+ <div class="card">
+  <h2>Lista de desenvolvimento</h2>
+  <p>☐ Conectar inteligência artificial</p>
+  <p>☐ Integrar WhatsApp Business oficialmente</p>
+  <p>☐ Criar banco de dados na nuvem</p>
+  <p>☐ Criar autenticação segura</p>
+  <p>☐ Desenvolver sistema de permissões</p>
+  <p>☐ Criar publicação automática de sites</p>
+ </div>
+</section>
+
+<section id="config">
+ <h1>Configurações</h1>
+ <p>Dados e exportação do projeto.</p>
+
+ <div class="card">
+  <h2>Proprietário</h2>
+  <p>Administrador principal: proprietário do projeto.</p>
+  <p>As permissões de outros usuários deverão ser implementadas no servidor antes de usar o sistema em produção.</p>
+ </div>
+
+ <button class="action" onclick="exportarDados()">Exportar dados em JSON</button>
+ <p class="small" style="margin-top:12px">Não coloque senhas, chaves de API ou dados pessoais de clientes em um repositório público.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+ NEXORA OS — Projeto inicial de plataforma digital.
+</footer>
+
+<script>
+const ler = chave => {
+ try {
+  return JSON.parse(localStorage.getItem(chave)) || [];
+ } catch {
+  return [];
+ }
+};
+
+const salvar = (chave, dados) => {
+ localStorage.setItem(chave, JSON.stringify(dados));
+};
+
+function showPage(id){
+ document.querySelectorAll("main section").forEach(sec=>{
+  sec.classList.remove("active");
+ });
+ document.getElementById(id).classList.add("active");
+ atualizarPainel();
+}
+
+function criarSite(){
+ const nome = document.getElementById("siteNome").value.trim();
+ const tipo = document.getElementById("siteTipo").value.trim();
+ const descricao = document.getElementById("siteDescricao").value.trim();
+
+ if(!nome || !tipo || !descricao){
+  alert("Preencha todos os campos.");
+  return;
+ }
+
+ document.getElementById("siteResultado").textContent =
+ "PLANEJAMENTO DO SITE\n\n"+
+ "Nome: "+nome+"\n"+
+ "Tipo: "+tipo+"\n"+
+ "Descrição: "+descricao+"\n\n"+
+ "Próximo passo: desenvolver as páginas e publicar o site.";
+}
+
+function salvarBot(){
+ const config = {
+  nome:document.getElementById("botNome").value,
+  funcao:document.getElementById("botFuncao").value,
+  mensagem:document.getElementById("botMensagem").value
+ };
+ salvar("nexora_bot",config);
+ document.getElementById("botResultado").textContent =
+ "Configuração salva neste navegador.";
+}
+
+function responder(){
+ const pergunta = document.getElementById("pergunta").value.trim();
+ if(!pergunta) return;
+
+ const texto = pergunta.toLowerCase();
+ let resposta = "Não tenho informação suficiente para responder. Encaminhe a dúvida para um atendente humano.";
+
+ if(texto.includes("olá") || texto.includes("oi")){
+  resposta = "Olá! Como posso ajudar você?";
+ }else if(texto.includes("preço") || texto.includes("valor")){
+  resposta = "Para consultar valores e condições, informe qual produto ou serviço deseja conhecer.";
+ }else if(texto.includes("horário")){
+  resposta = "Informe sua cidade para consultar o horário de atendimento.";
+ }else if(texto.includes("atendente") || texto.includes("humano")){
+  resposta = "Vou direcionar sua solicitação para atendimento humano.";
+ }
+
+ document.getElementById("chatResultado").textContent =
+ "Você: "+pergunta+"\nAssistente: "+resposta;
+ document.getElementById("pergunta").value = "";
+}
+
+function adicionarCliente(){
+ const nome = document.getElementById("clienteNome").value.trim();
+ const contato = document.getElementById("clienteContato").value.trim();
+
+ if(!nome || !contato){
+  alert("Preencha nome e contato.");
+  return;
+ }
+
+ const dados = ler("nexora_clientes");
+ dados.push({nome,contato,data:new Date().toLocaleDateString("pt-BR")});
+ salvar("nexora_clientes",dados);
+
+ document.getElementById("clienteNome").value = "";
+ document.getElementById("clienteContato").value = "";
+ atualizarPainel();
+}
+
+function adicionarProduto(){
+ const nome = document.getElementById("produtoNome").value.trim();
+ const preco = Number(document.getElementById("produtoPreco").value);
+
+ if(!nome || !Number.isFinite(preco) || preco < 0){
+  alert("Informe um nome e um preço válido.");
+  return;
+ }
+
+ const dados = ler("nexora_produtos");
+ dados.push({nome,preco});
+ salvar("nexora_produtos",dados);
+
+ document.getElementById("produtoNome").value = "";
+ document.getElementById("produtoPreco").value = "";
+ atualizarPainel();
+}
+
+function adicionarPedido(){
+ const cliente = document.getElementById("pedidoCliente").value.trim();
+ const descricao = document.getElementById("pedidoDescricao").value.trim();
+
+ if(!cliente || !descricao){
+  alert("Preencha os dados do pedido.");
+  return;
+ }
+
+ const dados = ler("nexora_pedidos");
+ dados.push({
+  cliente,
+  descricao,
+  data:new Date().toLocaleString("pt-BR"),
+  status:"Rascunho"
+ });
+ salvar("nexora_pedidos",dados);
+
+ document.getElementById("pedidoCliente").value = "";
+ document.getElementById("pedidoDescricao").value = "";
+ atualizarPainel();
+}
+
+function mostrarLista(id,dados,formatar){
+ const elemento = document.getElementById(id);
+ elemento.innerHTML = "";
+
+ dados.forEach(item=>{
+  const div = document.createElement("div");
+  div.className = "item";
+  div.textContent = formatar(item);
+  elemento.appendChild(div);
+ });
+}
+
+function atualizarPainel(){
+ const clientes = ler("nexora_clientes");
+ const produtos = ler("nexora_produtos");
+ const pedidos = ler("nexora_pedidos");
+
+ document.getElementById("totalClientes").textContent = clientes.length;
+ document.getElementById("totalProdutos").textContent = produtos.length;
+ document.getElementById("totalPedidos").textContent = pedidos.length;
+
+ mostrarLista("listaClientes",clientes,
+  item=>item.nome+" — "+item.contato);
+
+ mostrarLista("listaProdutos",produtos,
+  item=>item.nome+" — R$ "+item.preco.toFixed(2));
+
+ mostrarLista("listaPedidos",pedidos,
+  item=>item.cliente+" — "+item.descricao+" — "+item.status);
+}
+
+function exportarDados(){
+ const dados = {
+  clientes:ler("nexora_clientes"),
+  produtos:ler("nexora_produtos"),
+  pedidos:ler("nexora_pedidos"),
+  bot:JSON.parse(localStorage.getItem("nexora_bot") || "null")
+ };
+
+ const arquivo = new Blob(
+  [JSON.stringify(dados,null,2)],
+  {type:"application/json"}
+ );
+
+ const link = document.createElement("a");
+ link.href = URL.createObjectURL(arquivo);
+ link.download = "nexora-dados.json";
+ link.click();
+ URL.revokeObjectURL(link.href);
+}
+
+atualizarPainel();
+</script>
+
+</body>
+</html>
